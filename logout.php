@@ -9,7 +9,7 @@
         include "inc/head.inc.php";
     ?>
     <main class="container">
-        <h1>Logged Out Successfully</h1>
+        <h1>Logged Out Successfully afafujaHYFakjfhadkjfa</h1>
         
         <?php
             $_SESSION = array();
