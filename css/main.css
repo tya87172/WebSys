@@ -1,0 +1,32 @@
+section h2 {
+    text-decoration: underline;
+  }
+figure img {
+    padding:1px;
+    border:1px solid #021a40;
+}
+figure {
+    display: inline-block;
+}
+figure figcaption{
+    text-align: center;
+    color: grey;
+    font-style: italic;
+}
+footer{
+    border-top: 1px solid black;
+}
+footer p{
+    padding-top: 10px;
+    text-align: center;
+    font-style: italic;
+    font-size: 10px;
+}
+.img-popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Adjust the z-index as needed */
+
+}

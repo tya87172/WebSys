@@ -1,0 +1,40 @@
+upload table.css
+ensure head.inc.php links the table.css
+
+process_login remember to pull privilege column and set to the session['privilege'] so the web can check if its an admin
+
+remeber update team about the addtion of privilege column user table
+
+might need to update purchases table to include mailing address?
+
+login and register page need to add security to prevent xss, current can pass script into database from lname or fname.
+
+dashboard
+----------------------
+dashboard.php 
+dashboard query 
+
+
+users files (no create cause alr got register?? same stuff dw waste time)
+--------------
+table.php    //to display tables
+update_user.php //to display update form
+user_query.php // contains function that queries database to display data
+process_user_update.php // validations and sanitizations of data and update user row
+
+products files 
+---------------
+table_products.php  //to display tables
+update_product.php //to display update form
+product_query.php // contains function that queries database to display data
+process_product_update.php // validations and sanitizations of data and update product row
+create_product.php //create new product
+process_product_create.php // validations and sanitizations of data and create product row
+
+review files (i only want admin to have access to delete)
+---------------------
+table_reviews.php //to display tables
+review_query.php // to display review info
+
+purchases files (update/delete) (might hold out due to addresses)
+--------------------------

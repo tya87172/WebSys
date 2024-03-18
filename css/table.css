@@ -1,0 +1,46 @@
+/* Style for the overall container */
+        .table-container {
+            width: 90%; /* Set width to half of the viewport width */
+            height: 500px; /* Fixed height for the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin: auto; /* Center align the table */
+            border-collapse: collapse; /* Collapse borders */
+        }
+
+        /* Style for the table */
+        table {
+            width: 100%; /* Table width is 100% of its container */
+            border-collapse: collapse; /* Collapse borders for the table */
+        }
+
+        /* Style for table header */
+        th {
+            background-color: #f0f0f0; /* Background color for headers */
+            position: sticky; /* Make the header stick at the top */
+            top: 0; /* Position the sticky header at the very top */
+        }
+
+        /* Style for table cells */
+        td, th {
+            border: 1px solid black; /* Border for cells and headers */
+            text-align: left; /* Align text to the left */
+            padding: 8px; /* Padding inside cells */
+        }
+        /* Style for buttons */
+        .btn-update {
+            background-color: blue;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
