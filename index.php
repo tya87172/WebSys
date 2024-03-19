@@ -12,6 +12,7 @@
         <?php
         include "inc/nav.inc.php";
         ?>
+        <h1>blabla</h1>
         <main>
             <?php
             include "inc/slider.inc.php";
