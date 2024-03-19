@@ -55,10 +55,4 @@ function triggerPop(imageSrc){
     });
 
 }
-function confirmDelete(userId) {
-    window.location.href = 'table.php?confirmDelete=' + userId;
-}
-
-function cancelDelete() {
-    window.location.href = 'table.php';
-}
+c

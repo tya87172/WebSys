@@ -74,7 +74,7 @@
                 $errorMsg .= "Price can only contain numbers and dot.<br>";
                 $success = false;
             }
-            else if (preg_match('/[^a-zA-Z0-9\s\.\/]/', $_POST["pimage"])) {
+            else if (preg_match('/[^a-zA-Z0-9\s\.\/\_]/', $_POST["pimage"])) {
                 $errorMsg .= "Wrong image path format.<br>";
                 $success = false;
             }
