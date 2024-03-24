@@ -55,4 +55,3 @@ function triggerPop(imageSrc){
     });
 
 }
-c

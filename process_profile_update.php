@@ -14,12 +14,15 @@
         form.
         */
             
-            $email = $errorMsg = $pwd_hashed = $fname = $lname = $privilege = $id = "";  // declaring global variables
+            $id = $fname = $lname = $email = "";  // declaring global variables
             $success = true;
 
-            function authenticateUser(){
+            function updateProfile(){
                 // saying the variables used in this function are referenced from the global variable outside the scope
-                global $fname, $lname, $email, $pwd_hashed, $errorMsg, $success, $id, $privilege; 
+                global $id, $fname, $lname, $email; 
+
+                $id = $_SESSION["user_id"];
+
                 // Create database connection.
                 $config = parse_ini_file('/var/www/private/db-config.ini');
                 if (!$config)
@@ -42,34 +45,18 @@
                     }
                     else
                     {
-                        $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
-                        $stmt->bind_param("s", $email);
+                        $stmt = $conn->prepare("UPDATE users SET fname =?, lname=?, email=? WHERE user_id=?");
+                        $stmt->bind_param("sssi", $fname, $lname, $email, $id);
                         $stmt->execute();
                         $result = $stmt->get_result();
-                        if ($result->num_rows > 0)
+                        
+                        if (!$stmt->execute())
                         {
-                            // Note that email field is unique, so should only have
-                            // one row in the result set.
-                            $row = $result->fetch_assoc();
-                            $fname = $row["fname"];
-                            $lname = $row["lname"];
-                            $pwd_hashed = $row["password"];
-                            $id = $row["user_id"];
-                            $privilege = $row["privilege"];
-                            // Check if the password matches:
-                            if (!password_verify($_POST["pwd"], $pwd_hashed))
-                            {
-                            // Don't be too specific with the error message - hackers don't
-                            // need to know which one they got right or wrong. :)
-                            $errorMsg = "Email not found or password doesn't match...";
-                            $success = false;
-                            }
-                        }
-                        else
-                        {
-                            $errorMsg = "Email not found or password doesn't match...";
+                            // throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                            $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
                             $success = false;
                         }
+            
                         $stmt->close();
                     }
                     echo "<script>console.log('closing connection...')</script>";
@@ -77,14 +64,21 @@
                 }
             }
 
-            
-            if (empty($_POST["email"]))
+            if (empty($_POST["fname"]))
             {
-                $errorMsg .= "Email is required.<br>";
+                $errorMsg .= "First Name is required.<br>";
                 $success = false;
             }
-            else if (empty($_POST["pwd"])){
-                $errorMsg .= "Password is required.<br>";
+            else if (empty($_POST["lname"])){
+                $errorMsg .= "Last name is required.<br>";
+                $success = false;
+            }
+            else if (preg_match('/[^a-zA-Z\s]/', $_POST["lname"])) {
+                $errorMsg .= "Last name cannot contain special characters or numbers.<br>";
+                $success = false;
+            }
+            else if (preg_match('/[^a-zA-Z\s]/', $_POST["fname"])) {
+                $errorMsg .= "First name cannot contain special characters or numbers.<br>";
                 $success = false;
             }
             else
@@ -97,10 +91,12 @@
                 $success = false;
                 }
                 else{
+                    $fname = $_POST["fname"];
+                    $lname = $_POST["lname"];
                     
-                    $pwd_hashed = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+                    
                     // try{
-                    authenticateUser();
+                    updateProfile();
                     // }
                     // catch (Exception $e){
                     //     $success = false;
@@ -111,23 +107,17 @@
             }
             if ($success)
             {
-                $_SESSION['user_id'] = $id;
-                $_SESSION['logged_in'] = true;
-                $_SESSION['privilege'] = $privilege;
-                
                 echo "<script>console.log('Success.....')</script>";
-                echo "<h4>Login successful!</h4>";
-                echo "<p>Welcome: " . $fname . $lname;
+                echo "<h4>Update profile successful!</h4>";
                 echo "<br>";
-                echo "<a href='/'><button>Home</button></a>";
-                
+                echo "<a href='profile.php'><button>Back to Profile Settings</button></a>";
             }
             else
             {   
                 echo "<script>console.log('Failed.....')</script>";
                 echo "<h4>The following input errors were detected:</h4>";
                 echo "<p>" . $errorMsg . "</p>";
-                echo "<a href='login.php'><button>Return to Login</button></a>";
+                echo "<a href='profile.php'><button>Back to Profile Settings</button></a>";
             }
             /*
             * Helper function that checks input for malicious or unwanted content.
