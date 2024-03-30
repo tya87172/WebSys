@@ -3,9 +3,9 @@
 
 <body>
     <?php
-        include "inc/nav.inc.php";
-        include "inc/header.inc.php";
-        include "inc/head.inc.php";
+        include "../inc/nav.inc.php";
+        include "../inc/header.inc.php";
+        include "../inc/head.inc.php";
     ?>
     <main class="container">
         <?php
@@ -115,7 +115,7 @@
         ?>
     </main>
     <?php
-        include "inc/footer.inc.php";
+        include "../inc/footer.inc.php";
     ?>
 </body>
 </html>

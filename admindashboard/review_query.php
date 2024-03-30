@@ -2,7 +2,7 @@
 <html lang="en">
 <body>
     <?php
-        include "inc/head.inc.php";
+        include "../inc/head.inc.php";
         
         function displayReviews(){
             $success = true;

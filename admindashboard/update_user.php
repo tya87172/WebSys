@@ -4,9 +4,9 @@
     
 <body>
     <?php
-        include "inc/nav.inc.php";
-        include "inc/header.inc.php";
-        include "inc/head.inc.php";
+        include "../inc/nav.inc.php";
+        include "../inc/header.inc.php";
+        include "../inc/head.inc.php";
         include "user_query.php";
     ?>
     <main class="container">
@@ -21,7 +21,7 @@
         
     </main>
     <?php
-        include "inc/footer.inc.php";
+        include "../inc/footer.inc.php";
     ?>
 </body>
 </html>

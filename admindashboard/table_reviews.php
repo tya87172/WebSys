@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php
-        include "inc/nav.inc.php";
-        include "inc/header.inc.php";
-        include "inc/head.inc.php";
+        include "../inc/nav.inc.php";
+        include "../inc/header.inc.php";
+        include "../inc/head.inc.php";
         // include "user_query.php";
         include "review_query.php";
         
@@ -23,6 +23,6 @@
         <?php endif; ?>
     </body>
     <?php
-        include "inc/footer.inc.php";
+        include "../inc/footer.inc.php";
     ?>
 </html>

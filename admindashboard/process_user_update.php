@@ -3,9 +3,9 @@
 
 <body>
     <?php
-        include "inc/nav.inc.php";
-        include "inc/header.inc.php";
-        include "inc/head.inc.php";
+        include "../inc/nav.inc.php";
+        include "../inc/header.inc.php";
+        include "../inc/head.inc.php";
     ?>
     <main class="container">
         <?php
@@ -14,15 +14,12 @@
         form.
         */
             
-            $id = $fname = $lname = $email = "";  // declaring global variables
+            $userid = $privilege = $email = $errorMsg = $pwd_hashed = $fname = $lname = "";  // declaring global variables
             $success = true;
 
-            function updateProfile(){
+            function saveMemberToDB(){
                 // saying the variables used in this function are referenced from the global variable outside the scope
-                global $id, $fname, $lname, $email; 
-
-                $id = $_SESSION["user_id"];
-
+                global $fname, $lname, $email, $pwd_hashed, $errorMsg, $success, $privilege, $userid; 
                 // Create database connection.
                 $config = parse_ini_file('/var/www/private/db-config.ini');
                 if (!$config)
@@ -45,28 +42,42 @@
                     }
                     else
                     {
-                        $stmt = $conn->prepare("UPDATE users SET fname =?, lname=?, email=? WHERE user_id=?");
-                        $stmt->bind_param("sssi", $fname, $lname, $email, $id);
+                        $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+                        $stmt->bind_param("s", $email);
                         $stmt->execute();
                         $result = $stmt->get_result();
-                        
-                        if (!$stmt->execute())
+                        if ($result->num_rows > 0 && $result->fetch_assoc()["user_id"]!=$userid )
                         {
-                            // throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
-                            $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                            $errorMsg = "Email exists in database already!";
                             $success = false;
+                            $stmt->close();
                         }
+                        else{
+                            echo $fname;
+                            // Prepare the statement:
+                            $stmt = $conn->prepare("UPDATE users SET fname =?, lname=?, email=?, privilege=? WHERE user_id=?");
+                            // Bind & execute the query statement:
+                            $stmt->bind_param("ssssi", $fname, $lname, $email, $privilege, $userid);
+                        
+                            if (!$stmt->execute())
+                            {
+                                // throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+                                $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                                $success = false;
+                            }
             
-                        $stmt->close();
+                            $stmt->close();
+                        }
                     }
                     echo "<script>console.log('closing connection...')</script>";
                     $conn->close();
                 }
             }
 
-            if (empty($_POST["fname"]))
+            $userid = $_POST["userid"];
+            if (empty($_POST["email"]))
             {
-                $errorMsg .= "First Name is required.<br>";
+                $errorMsg .= "Email is required.<br>";
                 $success = false;
             }
             else if (empty($_POST["lname"])){
@@ -93,10 +104,11 @@
                 else{
                     $fname = $_POST["fname"];
                     $lname = $_POST["lname"];
+                    $privilege = $_POST["privilege"];
                     
                     
                     // try{
-                    updateProfile();
+                    saveMemberToDB();
                     // }
                     // catch (Exception $e){
                     //     $success = false;
@@ -108,16 +120,16 @@
             if ($success)
             {
                 echo "<script>console.log('Success.....')</script>";
-                echo "<h4>Update profile successful!</h4>";
+                echo "<h4>Update successful!</h4>";
                 echo "<br>";
-                echo "<a href='profile.php'><button>Back to Profile Settings</button></a>";
+                echo "<a href='table.php'><button>Back to User List</button></a>";
             }
             else
             {   
                 echo "<script>console.log('Failed.....')</script>";
                 echo "<h4>The following input errors were detected:</h4>";
                 echo "<p>" . $errorMsg . "</p>";
-                echo "<a href='profile.php'><button>Back to Profile Settings</button></a>";
+                echo '<a href="update_user.php?edit=' . $userid . '"><button>Return to Update</button></a>';
             }
             /*
             * Helper function that checks input for malicious or unwanted content.
@@ -133,7 +145,7 @@
         ?>
     </main>
     <?php
-        include "inc/footer.inc.php";
+        include "../inc/footer.inc.php";
     ?>
 </body>
 </html>

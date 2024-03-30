@@ -2,7 +2,7 @@
 <html lang="en">
 <body>
     <?php
-        include "inc/head.inc.php";
+        include "../inc/head.inc.php";
         
         function displayProducts(){
             $success = true;
@@ -103,7 +103,7 @@
                     </div>
                     <div class="mb-3">
                     <label for="pimage" class="form-label">Image URL:</label>';
-                    $imagesDirectory = 'images/'; // Set the path to your images directory
+                    $imagesDirectory = '../images/'; // Set the path to your images directory
                     $images = glob($imagesDirectory . '*.jpg'); // Get all .jpg files from the directory
 
                     echo '<select id="pimage" name="pimage">';
